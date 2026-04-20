@@ -30,7 +30,7 @@ export default function RootLayout({
         >
 
 
-            <body className="min-h-full flex flex-col">
+            <body className="w-full h-full grid grid-rows-[4rem_calc(100%-4rem)] overflow-hidden">
                 <Nav />
                 {children}
             </body>

@@ -1,0 +1,28 @@
+import { useState } from "react";
+
+const MvmtAdder = () => {
+    const [stage, setStage] = useState<'closed' | 'type' | 'intensity'>('closed');
+
+    return (
+        <div data-name="mvmt-adder-container" className="fixed bottom-0 w-full flex justify-end p-8">
+            <button data-name='add-movement' className="w-14 rounded-full aspect-1/1 bg-primary flex justify-center items-center">
+                <h2 className="text-bg1 text-3xl text-bold">+</h2>
+            </button>
+
+            {
+                stage === 'type' ?
+                    <div data-name='mvmt-type-selection'>
+                        <button data-name='add-movement' className="w-14 rounded-full aspect-1/1 bg-primary flex justify-center items-center">
+                            <h2 className="text-bg1 text-3xl text-bold">+</h2>
+                        </button>
+                    </div>
+                    : stage === 'intensity' ?
+                        <div data-name='mvmt-intensity-selection'>
+                        </div>
+                        : null
+            }
+        </div>
+    )
+}
+
+export default MvmtAdder;
