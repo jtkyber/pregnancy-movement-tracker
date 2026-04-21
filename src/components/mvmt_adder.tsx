@@ -2,24 +2,26 @@ import { degToRad, radToDeg } from "@/utils/math";
 import { useState } from "react";
 
 const MvmtAdder = () => {
+    const animationDurationS = 0.25;
+
     const [stage, setStage] = useState<'closed' | 'type' | 'intensity'>('closed');
     const [animationDirection, setAnimationDirection] = useState<'forwards' | 'reverse'>('forwards');
 
     const handleMvmtAddClick = () => {
         if (stage === 'closed') {
-            setStage('type')
             setAnimationDirection('forwards')
+            setStage('type')
         }
         else {
             setAnimationDirection('reverse')
-            setTimeout(() => setStage('closed'), 250)
+            setTimeout(() => setStage('closed'), animationDurationS * 1000)
         }
     }
 
     return (
         <div data-name="mvmt-adder-container" className="absolute bottom-0 right-0 w-16 rounded-full aspect-1/1 m-16">
-            <button onClick={handleMvmtAddClick} data-name='add-movement' className="absolute w-full h-full rounded-[inherit] bg-primary flex justify-center items-center z-1">
-                <h2 className="text-bg1 text-3xl text-bold">{stage === 'closed' ? '+' : 'X'}</h2>
+            <button onClick={handleMvmtAddClick} data-name='add-movement' className="absolute w-full h-full rounded-[inherit] bg-primary flex justify-center items-center z-1 outline-none shadow-[0_0_0.8rem_rgba(0,0,0,0.3)]">
+                <h2 className="text-bg1 text-3xl text-bold">{stage === 'closed' ? '+' : '×'}</h2>
             </button>
 
             {
@@ -36,10 +38,12 @@ const MvmtAdder = () => {
 
                         return (
                             <button key={`${i}-${animationDirection}`} style={{
-                                animation: `radial-translate${i + 1} 0.25s var(--radial-cubic-bezier) ${animationDirection}`,
-                                animationFillMode: 'forwards'
-                            }} data-name={`${name.toLowerCase()}-btn`} className="absolute w-full h-full rounded-[inherit] bg-primary flex justify-center items-center">
-                                <h5 className="text-bg1 text-lg text-bold">{name}</h5>
+                                animation: `radial-translate${i + 1} ${animationDurationS}s var(--radial-cubic-bezier) ${animationDirection}`,
+                                animationFillMode: 'forwards',
+                                backgroundColor: `var(--bg2)`,
+                                border: `2px solid var(--${name.toLowerCase()})`
+                            }} data-name={`${name.toLowerCase()}-btn`} className="absolute w-17 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center shadow-[0_0_0.8rem_rgba(0,0,0,0.3)]">
+                                <h5 style={{ color: `var(--${name.toLowerCase()})` }} className="text-bg1 text-md font-semibold">{name}</h5>
                             </button>
                         )
                     })

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/navbar";
+import TabBar from "@/components/tab_bar";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -30,9 +31,10 @@ export default function RootLayout({
         >
 
 
-            <body className="w-full h-full grid grid-rows-[4rem_calc(100%-4rem)] overflow-hidden">
+            <body className="w-full h-full grid grid-rows-[4rem_calc(100%-9rem)_5rem] overflow-hidden">
                 <Nav />
                 {children}
+                <TabBar />
             </body>
         </html>
     );

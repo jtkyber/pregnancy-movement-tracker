@@ -1,13 +1,13 @@
 @import "tailwindcss";
+@import './svg_styles.css';
 
 :root {
-    --bg1: #1F1F23;
-    --bg2: #2A2A2F;
-    --bg3: #32323A;
-    --primary: #32323A;
-    --accent1: #32323A;
-    --accent2: #32323A;
-    --accent3: #8EC5D6;
+    --bg1: #121414;
+    --bg2: #2a3130;
+    --primary: #7faf98;
+    --accent1: #8fb9d6;
+    --accent2: #d8a3aa;
+    --accent3: #d8c676;
     --text-primary: #EDEDED;
     --text-secondary: #EDEDED;
     --text-disabled: #EDEDED;
@@ -23,7 +23,6 @@
 @theme inline {
     --color-bg1: var(--bg1);
     --color-bg2: var(--bg2);
-    --color-bg3: var(--bg3);
     --color-primary: var(--primary);
     --color-accent1: var(--accent1);
     --color-accent2: var(--accent2);
@@ -43,16 +42,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg1: #1F1F23;
-    --bg2: #2A2A2F;
-    --bg3: #32323A;
-    --primary: #8EC5D6;
-    --accent1: #E6AFCB;
-    --accent2: #A9D18E;
-    --accent3: #EADFA3;
-    --text-primary: #EDEDED;
-    --text-secondary: #B8B8B8;
-    --text-disabled: #7A7A7A;
+    --bg1: #1f2423;
+    --bg2: #2a3130;
+    --primary: #7faf98;
+    --accent1: #8fb9d6;
+    --accent2: #d8a3aa;
+    --accent3: #d8c676;
+    --text-primary: #E7ECEB;
+    --text-secondary: #B6C3C1;
+    --text-disabled: #7F908D;
   }
 }
 
