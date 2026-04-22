@@ -6,10 +6,18 @@ const MvmtAdder = () => {
     const [movementType, setMovementType] = useState<MovementType | null>(null)
     const [movementIntensity, setMovementIntensity] = useState<MovementIntensity | null>(null)
 
+    const handleMovementAdd = async () => {
+        console.log(movementType, movementIntensity);
+    }
+
     useEffect(() => {
         if (stage === "closed" || stage === 'type') setMovementType(null)
         else if (stage === 'completed') {
-            setTimeout(() => setStage('closed'), 2000);
+            handleMovementAdd()
+            setTimeout(() => {
+                setStage('closed')
+                setMovementIntensity(null);
+            }, 2000);
         }
     }, [stage])
 
@@ -77,7 +85,7 @@ const MvmtAdder = () => {
                             }}
                             data-name={`${level.toLowerCase()}-btn`}
                             className="mvmt-adder-intensity-btn absolute w-20 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center bg-bg2">
-                            <h5 style={{ color: `var(--${level.toLowerCase()})` }} className="pointer-events-none text-bg1 text-md font-semibold">{level}</h5>
+                            <h5 style={{ color: isSelected ? 'var(--bg2)' : `var(--${level.toLowerCase()})` }} className="pointer-events-none text-bg1 text-md font-semibold">{level}</h5>
                         </button>
                     )
                 })

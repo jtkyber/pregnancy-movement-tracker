@@ -1,0 +1,113 @@
+.selected-type {
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.add-btn {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+[data-mvmt-adder-stage="intensity"] {
+    .selected-type {
+        transition: opacity 0s linear 0.25s;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+    }
+
+    .add-btn {
+        transition: opacity 0s linear 0.25s;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+[data-mvmt-adder-stage="completed"] {
+    .selected-type {
+        transition: opacity 0s linear 0.25s;
+    }
+
+    .add-btn {
+        transition: opacity 0s linear 0.25s;
+        background-color: var(--success);
+    }
+}
+
+.mvmt-adder-type-btn, .mvmt-adder-intensity-btn {
+    transition: transform 0.25s var(--radial-cubic-bezier);
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-mvmt-adder-stage="closed"] .mvmt-adder-type-btn {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-mvmt-adder-stage="intensity"] .mvmt-adder-type-btn {
+    transition: 
+        transform 0.25s var(--radial-cubic-bezier-reverse),
+        opacity 0s linear 0.25s;
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-mvmt-adder-stage="completed"] .mvmt-adder-intensity-btn {
+    transition: 
+        transform 0.25s var(--radial-cubic-bezier-reverse),
+        opacity 0s linear 0.25s;
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-mvmt-adder-stage="type"] {
+    .mvmt-adder-type-btn {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .mvmt-adder-type-btn:nth-child(3) {
+        transform: translate(75%, -129.9%) scale(1);
+    }
+    .mvmt-adder-type-btn:nth-child(4) {
+        transform: translate(-51.3%, -141%) scale(1);
+    }
+    .mvmt-adder-type-btn:nth-child(5) {
+        transform: translate(-141%, -51.3%) scale(1);
+    }
+    .mvmt-adder-type-btn:nth-child(6) {
+        transform: translate(-129.9%, 75%) scale(1);
+    }
+}
+
+[data-mvmt-adder-stage="type"] .mvmt-adder-intensity-btn {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+[data-mvmt-adder-stage="intensity"] {
+    .mvmt-adder-intensity-btn {
+        transition: 
+            transform 0.25s var(--radial-cubic-bezier) 0.25s,
+            opacity 0s linear 0.25s;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .mvmt-adder-intensity-btn:nth-child(7) {
+        transform: translate(26%, -148%) scale(1);
+    }
+    .mvmt-adder-intensity-btn:nth-child(8) {
+        transform: translate(-106%, -106%) scale(1);
+    }
+    .mvmt-adder-intensity-btn:nth-child(9) {
+        transform: translate(-148%, 26%) scale(1);
+    }
+}
