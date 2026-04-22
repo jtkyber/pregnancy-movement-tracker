@@ -12,10 +12,10 @@ export type Movement = {
 }
 
 export enum MovementType {
-    Kick = 'kick',
-    Roll = 'roll',
     Flutter = 'flutter',
-    Hiccup = 'hiccup'
+    Hiccup = 'hiccup',
+    Roll = 'roll',
+    Kick = 'kick',
 }
 
 export enum MovementIntensity {

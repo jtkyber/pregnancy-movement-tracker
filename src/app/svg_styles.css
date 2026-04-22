@@ -1,8 +1,4 @@
-svg#history_svg, svg#trends_svg {
-    height: 2.5rem;
+svg#history_svg, svg#trends_svg, svg#home_svg {
+    height: 2rem;
     width: auto;
-   
-    * {
-        fill: var(--primary);
-    }
 }

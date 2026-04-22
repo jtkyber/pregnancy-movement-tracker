@@ -1,59 +1,87 @@
-import { degToRad, radToDeg } from "@/utils/math";
-import { useState } from "react";
+import { MovementIntensity, MovementType } from "@/types/movements";
+import { useEffect, useState } from "react";
 
 const MvmtAdder = () => {
-    const animationDurationS = 0.25;
+    const [stage, setStage] = useState<'closed' | 'type' | 'intensity' | 'completed'>('closed');
+    const [movementType, setMovementType] = useState<MovementType | null>(null)
+    const [movementIntensity, setMovementIntensity] = useState<MovementIntensity | null>(null)
 
-    const [stage, setStage] = useState<'closed' | 'type' | 'intensity'>('closed');
-    const [animationDirection, setAnimationDirection] = useState<'forwards' | 'reverse'>('forwards');
-
-    const handleMvmtAddClick = () => {
-        if (stage === 'closed') {
-            setAnimationDirection('forwards')
-            setStage('type')
+    useEffect(() => {
+        if (stage === "closed" || stage === 'type') setMovementType(null)
+        else if (stage === 'completed') {
+            setTimeout(() => setStage('closed'), 2000);
         }
-        else {
-            setAnimationDirection('reverse')
-            setTimeout(() => setStage('closed'), animationDurationS * 1000)
+    }, [stage])
+
+    const handleMainClick = () => {
+        switch (stage) {
+            case 'closed': setStage('type'); break;
+            case 'type': setStage('closed'); break;
+            case 'intensity': setStage('type'); break;
         }
     }
 
+    const handleTypeSelect = (type: MovementType) => {
+        setMovementType(type);
+        setStage('intensity');
+    }
+
+    const handleIntensitySelect = (intensity: MovementIntensity) => {
+        setMovementIntensity(intensity);
+        setStage('completed');
+    }
+
     return (
-        <div data-name="mvmt-adder-container" className="absolute bottom-0 right-0 w-16 rounded-full aspect-1/1 m-16">
-            <button onClick={handleMvmtAddClick} data-name='add-movement' className="absolute w-full h-full rounded-[inherit] bg-primary flex justify-center items-center z-1 outline-none shadow-[0_0_0.8rem_rgba(0,0,0,0.3)]">
-                <h2 className="text-bg1 text-3xl text-bold">{stage === 'closed' ? '+' : '×'}</h2>
+        <div data-name="mvmt-adder-container" data-mvmt-adder-stage={stage} className="absolute bottom-0 right-0 w-17 rounded-full aspect-1/1 m-16">
+            <button style={{ border: `2px solid var(--${movementType})`, backgroundColor: `var(--${movementType})` }} onClick={handleMainClick} data-name='selected-type' className="selected-type absolute w-full h-full rounded-[inherit] flex justify-center items-center outline-none bg-bg2">
+                <h5 className="pointer-events-none text-bg1 text-md font-semibold capitalize text-bg1">{movementType}</h5>
+            </button>
+
+            <button onClick={handleMainClick} data-name='add-movement' className="add-btn absolute w-full h-full rounded-[inherit] bg-primary flex justify-center items-center outline-none">
+                <h2 className="text-bg1 text-3xl text-bold">{stage === 'closed' ? '+' : stage === 'completed' ? '✓' : '×'}</h2>
             </button>
 
             {
-                stage === 'type' ?
-                    Array.from({ length: 4 }, (_, i) => {
-                        let name: string;
+                Object.keys(MovementType).map((mType, _) => {
+                    const isSelected = movementType === MovementType[mType as keyof typeof MovementType];
 
-                        switch (i) {
-                            case 0: name = 'Flutter'; break;
-                            case 1: name = 'Hiccup'; break;
-                            case 2: name = 'Roll'; break;
-                            default: name = 'Kick'; break;
-                        }
-
-                        return (
-                            <button key={`${i}-${animationDirection}`} style={{
-                                animation: `radial-translate${i + 1} ${animationDurationS}s var(--radial-cubic-bezier) ${animationDirection}`,
-                                animationFillMode: 'forwards',
-                                backgroundColor: `var(--bg2)`,
-                                border: `2px solid var(--${name.toLowerCase()})`
-                            }} data-name={`${name.toLowerCase()}-btn`} className="absolute w-17 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center shadow-[0_0_0.8rem_rgba(0,0,0,0.3)]">
-                                <h5 style={{ color: `var(--${name.toLowerCase()})` }} className="text-bg1 text-md font-semibold">{name}</h5>
-                            </button>
-                        )
-                    })
-
-                    : stage === 'intensity' ?
-                        <>
-                        </>
-                        : null
+                    return (
+                        <button
+                            key={mType}
+                            id={mType}
+                            onClick={() => handleTypeSelect(MovementType[mType as keyof typeof MovementType])}
+                            style={{
+                                border: `2px solid var(--${mType.toLowerCase()})`,
+                                backgroundColor: isSelected ? `var(--${mType.toLowerCase()})` : 'var(--bg2)'
+                            }}
+                            data-name={`${mType.toLowerCase()}-btn`}
+                            className="mvmt-adder-type-btn absolute w-17 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center">
+                            <h5 style={{ color: isSelected ? 'var(--bg2)' : `var(--${mType.toLowerCase()})` }} className="pointer-events-none text-bg1 text-md font-semibold">{mType}</h5>
+                        </button>
+                    )
+                })
             }
 
+            {
+                ['Gentle', 'Moderate', 'Strong'].map((level, _) => {
+                    const isSelected = movementIntensity === MovementIntensity[level as keyof typeof MovementIntensity];
+
+                    return (
+                        <button
+                            key={level}
+                            id={level}
+                            onClick={() => handleIntensitySelect(MovementIntensity[level as keyof typeof MovementIntensity])}
+                            style={{
+                                border: `2px solid var(--${level.toLowerCase()})`,
+                                backgroundColor: isSelected ? `var(--${level.toLowerCase()})` : 'var(--bg2)'
+                            }}
+                            data-name={`${level.toLowerCase()}-btn`}
+                            className="mvmt-adder-intensity-btn absolute w-20 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center bg-bg2">
+                            <h5 style={{ color: `var(--${level.toLowerCase()})` }} className="pointer-events-none text-bg1 text-md font-semibold">{level}</h5>
+                        </button>
+                    )
+                })
+            }
         </div>
     )
 }
