@@ -1,4 +1,5 @@
-import { MovementIntensity, MovementType } from "@/types/movements";
+import { MovementIntensity, MovementType } from "@/constants/movement";
+import { MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
 import { useEffect, useState } from "react";
 
 const MvmtAdder = () => {
@@ -50,42 +51,44 @@ const MvmtAdder = () => {
             </button>
 
             {
-                Object.keys(MovementType).map((mType, _) => {
-                    const isSelected = movementType === MovementType[mType as keyof typeof MovementType];
+                (Object.keys(MOVEMENT_TYPE_LABELS) as MovementType[]).map((key, _) => {
+                    const label = MOVEMENT_TYPE_LABELS[key];
+                    const isSelected = key === movementType;
 
                     return (
                         <button
-                            key={mType}
-                            id={mType}
-                            onClick={() => handleTypeSelect(MovementType[mType as keyof typeof MovementType])}
+                            key={key}
+                            id={key}
+                            onClick={() => handleTypeSelect(key)}
                             style={{
-                                border: `2px solid var(--${mType.toLowerCase()})`,
-                                backgroundColor: isSelected ? `var(--${mType.toLowerCase()})` : 'var(--bg2)'
+                                border: `2px solid var(--${key})`,
+                                backgroundColor: isSelected ? `var(--${key})` : 'var(--bg2)'
                             }}
-                            data-name={`${mType.toLowerCase()}-btn`}
+                            data-name={`${key}-btn`}
                             className="mvmt-adder-type-btn absolute w-17 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center">
-                            <h5 style={{ color: isSelected ? 'var(--bg2)' : `var(--${mType.toLowerCase()})` }} className="pointer-events-none text-bg1 text-md font-semibold">{mType}</h5>
+                            <h5 style={{ color: isSelected ? 'var(--bg2)' : `var(--${key})` }} className="pointer-events-none text-bg1 text-md font-semibold">{label}</h5>
                         </button>
                     )
                 })
             }
 
             {
-                ['Gentle', 'Moderate', 'Strong'].map((level, _) => {
-                    const isSelected = movementIntensity === MovementIntensity[level as keyof typeof MovementIntensity];
+                (Object.keys(MOVEMENT_INTENSITY_LABELS) as MovementIntensity[]).map((key, _) => {
+                    const label = MOVEMENT_INTENSITY_LABELS[key];
+                    const isSelected = key === movementIntensity;
 
                     return (
                         <button
-                            key={level}
-                            id={level}
-                            onClick={() => handleIntensitySelect(MovementIntensity[level as keyof typeof MovementIntensity])}
+                            key={key}
+                            id={key}
+                            onClick={() => handleIntensitySelect(key)}
                             style={{
-                                border: `2px solid var(--${level.toLowerCase()})`,
-                                backgroundColor: isSelected ? `var(--${level.toLowerCase()})` : 'var(--bg2)'
+                                border: `2px solid var(--${key})`,
+                                backgroundColor: isSelected ? `var(--${key})` : 'var(--bg2)'
                             }}
-                            data-name={`${level.toLowerCase()}-btn`}
+                            data-name={`${key}-btn`}
                             className="mvmt-adder-intensity-btn absolute w-20 aspect-1/1 rounded-[inherit] bg-accent1 flex justify-center items-center bg-bg2">
-                            <h5 style={{ color: isSelected ? 'var(--bg2)' : `var(--${level.toLowerCase()})` }} className="pointer-events-none text-bg1 text-md font-semibold">{level}</h5>
+                            <h5 style={{ color: isSelected ? 'var(--bg2)' : `var(--${key})` }} className="pointer-events-none text-bg1 text-md font-semibold">{label}</h5>
                         </button>
                     )
                 })

@@ -1,7 +1,7 @@
 export const MOVEMENT_INTENSITIES = [
-    "low",
-    "medium",
-    "high",
+    "light",
+    "moderate",
+    "strong",
 ] as const;
 
 export type MovementIntensity = typeof MOVEMENT_INTENSITIES[number];

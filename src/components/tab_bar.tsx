@@ -2,7 +2,7 @@
 import HistorySvg from "./svg/history.svg";
 import TrendsSvg from "./svg/trends.svg";
 import HomeSvg from "./svg/home.svg";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const TabBar = () => {
     const pathName = usePathname();

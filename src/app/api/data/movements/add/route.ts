@@ -1,5 +1,5 @@
+import { MovementIntensity, MovementType } from "@/constants/movement";
 import { sql } from "@/lib/db";
-import { MovementIntensity, MovementType } from "@/types/movements";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

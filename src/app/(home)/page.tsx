@@ -1,8 +1,7 @@
 'use client'
 import { CSSProperties } from "react";
-import { mock_pregnancy } from "../../mock_data";
 import { removeDzContainer } from "@/utils/dz";
-import MvmtAdder from "@/components/mvmt_adder";
+import MvmtAdder from "./_components/mvmt_adder";
 
 export default function Home() {
     removeDzContainer();

@@ -1,4 +1,4 @@
-import { MovementIntensity, MovementType } from "@/shared/constants/movement"
+import { MovementIntensity, MovementType } from "@/constants/movement"
 
 export type Pregnancy = {
     name: string,
@@ -14,15 +14,15 @@ export type Movement = {
 }
 
 export const MOVEMENT_TYPE_LABELS: Record<MovementType, string> = {
-    flutter: 'flutter',
-    hiccup: 'hiccup',
-    roll: 'roll',
-    kick: 'kick'
+    flutter: 'Flutter',
+    hiccup: 'Hiccup',
+    roll: 'Roll',
+    kick: 'Kick'
 }
 
 export const MOVEMENT_INTENSITY_LABELS: Record<MovementIntensity, string> = {
-    low: 'Gentle',
-    medium: 'Moderate',
-    high: 'Strong'
+    light: 'Gentle',
+    moderate: 'Moderate',
+    strong: 'Strong'
 }
 
