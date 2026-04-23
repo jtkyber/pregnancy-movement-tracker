@@ -2,6 +2,7 @@
 import { CSSProperties } from "react";
 import { removeDzContainer } from "@/utils/dz";
 import { mock_pregnancy } from "../../../mock_data";
+import { MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
 
 export default function History() {
     removeDzContainer();
@@ -14,6 +15,9 @@ export default function History() {
                         mock_pregnancy.movements.map(m => {
                             const { id, type, intensity, timestamp } = m;
 
+                            const typeLabel = MOVEMENT_TYPE_LABELS[type];
+                            const intensityLabel = MOVEMENT_INTENSITY_LABELS[intensity];
+
                             const date_time = new Date(timestamp * 1000);
                             const date = date_time.toLocaleDateString('en-gb', { month: 'short', day: 'numeric' });
                             const time = date_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -21,10 +25,10 @@ export default function History() {
                             const textStyle: CSSProperties = { color: `var(--${type})` };
 
                             return <div style={{ border: `2px solid var(--${type})` }} key={id} data-name="mvmt-card" className={"w-full h-24 rounded-md grid grid-cols-3 grid-rows-2 px-4 py-2 bg-bg2"}>
-                                <h3 style={textStyle} className="col-start-1 col-span-1 row-start-1 row-span-1 self-start justify-self-start text-black capitalize text-lg">{type}</h3>
+                                <h3 style={textStyle} className="col-start-1 col-span-1 row-start-1 row-span-1 self-start justify-self-start text-black text-lg">{typeLabel}</h3>
                                 <h3 style={textStyle} className="col-start-2 col-span-1 row-start-1 row-span-1 self-end justify-self-center text-black text-2xl font-bold">{time}</h3>
                                 <h3 style={textStyle} className="col-start-2 col-span-1 row-start-2 row-span-1 self-start justify-self-center text-black text-xl">{date}</h3>
-                                <h3 style={textStyle} className="col-start-3 col-span-1 row-start-1 row-span-1 self-start justify-self-end text-black capitalize text-lg">{intensity}</h3>
+                                <h3 style={textStyle} className="col-start-3 col-span-1 row-start-1 row-span-1 self-start justify-self-end text-black text-lg">{intensityLabel}</h3>
                             </div>
                         })
                     }
