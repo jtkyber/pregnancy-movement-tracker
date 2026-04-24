@@ -8,8 +8,8 @@ export async function POST(req: Request) {
         = await req.json();
 
     const [data] = await sql`
-        INSERT INTO movements (pregnancy_id, type, intensity)
-        VALUES (${pregnancyID} ${type} ${intensity})
+        INSERT INTO movements (pregnancy_id, movement_type, movement_intensity)
+        VALUES (${pregnancyID}, ${type}, ${intensity})
         RETURNING *
     ;`;
 

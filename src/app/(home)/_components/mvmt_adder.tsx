@@ -1,4 +1,5 @@
 import { MovementIntensity, MovementType } from "@/constants/movement";
+import { addMovement } from "@/lib/api/movements";
 import { MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
 import { useEffect, useState } from "react";
 
@@ -8,18 +9,20 @@ const MvmtAdder = () => {
     const [movementIntensity, setMovementIntensity] = useState<MovementIntensity | null>(null)
 
     const handleMovementAdd = async () => {
+        if (movementType === null || movementIntensity === null) return;
+
         console.log(movementType, movementIntensity);
+        await addMovement(1, movementType, movementIntensity);
+
+        setTimeout(() => {
+            setStage('closed')
+            setMovementIntensity(null);
+        }, 2000);
     }
 
     useEffect(() => {
         if (stage === "closed" || stage === 'type') setMovementType(null)
-        else if (stage === 'completed') {
-            handleMovementAdd()
-            setTimeout(() => {
-                setStage('closed')
-                setMovementIntensity(null);
-            }, 2000);
-        }
+        else if (stage === 'completed') handleMovementAdd()
     }, [stage])
 
     const handleMainClick = () => {
