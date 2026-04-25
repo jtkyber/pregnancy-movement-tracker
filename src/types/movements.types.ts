@@ -9,8 +9,8 @@ export type Movement = {
     id: number,
     type: MovementType,
     intensity: MovementIntensity,
-    timestamp: number,
-    note?: string
+    timestamp: Date,
+    note: string | null
 }
 
 export const MOVEMENT_TYPE_LABELS: Record<MovementType, string> = {

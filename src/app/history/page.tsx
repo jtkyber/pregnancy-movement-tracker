@@ -1,36 +1,56 @@
 'use client'
-import { CSSProperties } from "react";
+import { CSSProperties, Fragment, useEffect, useState } from "react";
 import { removeDzContainer } from "@/utils/dz";
-import { mock_pregnancy } from "../../../mock_data";
-import { MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
+import { Movement, MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getMovementsChronological } from "@/services/api/movements";
 
 export default function History() {
     removeDzContainer();
+
+    const [page, setPage] = useState<number>(0);
+
+    const { data, fetchNextPage, hasNextPage, status, error } = useInfiniteQuery({
+        queryKey: ['movementHistory'],
+        queryFn: () => getMovementsChronological(1, page),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    });
+
+    if (status === 'pending') return <p className="p-4">Loading...</p>
+    if (status === 'error') return <p className="p-4">Error: {error?.message}</p>
 
     return (
         <main data-name="container" className="relative bg-inherit w-full">
             <div className="w-full h-full overflow-y-auto">
                 <div data-name="mvmt-history-container" className="flex flex-nowrap flex-col gap-4 px-10 py-4 pb-12">
                     {
-                        mock_pregnancy.movements.map(m => {
-                            const { id, type, intensity, timestamp } = m;
+                        data?.pages.map((page, i) => (
+                            <Fragment key={i}>
+                                {
 
-                            const typeLabel = MOVEMENT_TYPE_LABELS[type];
-                            const intensityLabel = MOVEMENT_INTENSITY_LABELS[intensity];
+                                    page.map((m: Movement) => {
+                                        const { id, type, intensity, timestamp } = m;
 
-                            const date_time = new Date(timestamp * 1000);
-                            const date = date_time.toLocaleDateString('en-gb', { month: 'short', day: 'numeric' });
-                            const time = date_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                        const typeLabel = MOVEMENT_TYPE_LABELS[type];
+                                        const intensityLabel = MOVEMENT_INTENSITY_LABELS[intensity];
 
-                            const textStyle: CSSProperties = { color: `var(--${type})` };
+                                        const date_time = new Date(timestamp);
+                                        const date = date_time.toLocaleDateString('en-gb', { month: 'short', day: 'numeric' });
+                                        const time = date_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                            return <div style={{ border: `2px solid var(--${type})` }} key={id} data-name="mvmt-card" className={"w-full h-24 rounded-md grid grid-cols-3 grid-rows-2 px-4 py-2 bg-bg2"}>
-                                <h3 style={textStyle} className="col-start-1 col-span-1 row-start-1 row-span-1 self-start justify-self-start text-black text-lg">{typeLabel}</h3>
-                                <h3 style={textStyle} className="col-start-2 col-span-1 row-start-1 row-span-1 self-end justify-self-center text-black text-2xl font-bold">{time}</h3>
-                                <h3 style={textStyle} className="col-start-2 col-span-1 row-start-2 row-span-1 self-start justify-self-center text-black text-xl">{date}</h3>
-                                <h3 style={textStyle} className="col-start-3 col-span-1 row-start-1 row-span-1 self-start justify-self-end text-black text-lg">{intensityLabel}</h3>
-                            </div>
-                        })
+                                        const textStyle: CSSProperties = { color: `var(--${type})` };
+
+                                        return <div style={{ border: `2px solid var(--${type})` }} key={id} data-name="mvmt-card" className={"w-full h-24 rounded-md grid grid-cols-3 grid-rows-2 px-4 py-2 bg-bg2"}>
+                                            <h3 style={textStyle} className="col-start-1 col-span-1 row-start-1 row-span-1 self-start justify-self-start text-black text-lg">{typeLabel}</h3>
+                                            <h3 style={textStyle} className="col-start-2 col-span-1 row-start-1 row-span-1 self-end justify-self-center text-black text-2xl font-bold">{time}</h3>
+                                            <h3 style={textStyle} className="col-start-2 col-span-1 row-start-2 row-span-1 self-start justify-self-center text-black text-xl">{date}</h3>
+                                            <h3 style={textStyle} className="col-start-3 col-span-1 row-start-1 row-span-1 self-start justify-self-end text-black text-lg">{intensityLabel}</h3>
+                                        </div>
+                                    })
+                                }
+                            </Fragment>
+                        ))
                     }
                 </div>
             </div>

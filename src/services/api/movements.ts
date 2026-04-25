@@ -21,3 +21,14 @@ export async function addMovement(pregnancyID: number, type: MovementType, inten
         throw new Error('Unable to add movement');
     }
 }
+
+export async function getMovementsChronological(pregnancyID: number, page: number) {
+    try {
+        const res = await fetch(`/api/data/movements/get?pregnancyID=${pregnancyID}&page=${page}&limit=10`);
+
+        const data = await res.json();
+        return data
+    } catch (err) {
+
+    }
+}   

@@ -1,6 +1,7 @@
 import { MovementIntensity, MovementType } from "@/constants/movement";
-import { addMovement } from "@/lib/api/movements";
+import { addMovement } from "@/services/api/movements";
 import { MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 const MvmtAdder = () => {
@@ -8,10 +9,15 @@ const MvmtAdder = () => {
     const [movementType, setMovementType] = useState<MovementType | null>(null)
     const [movementIntensity, setMovementIntensity] = useState<MovementIntensity | null>(null)
 
-    const handleMovementAdd = async () => {
+    const queryClient = useQueryClient();
+    const { mutate: addMovementMutation } = useMutation({
+        mutationFn: handleMovementAdd,
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['movementHistory'] }),
+    })
+
+    async function handleMovementAdd() {
         if (movementType === null || movementIntensity === null) return;
 
-        console.log(movementType, movementIntensity);
         await addMovement(1, movementType, movementIntensity);
 
         setTimeout(() => {
@@ -22,7 +28,7 @@ const MvmtAdder = () => {
 
     useEffect(() => {
         if (stage === "closed" || stage === 'type') setMovementType(null)
-        else if (stage === 'completed') handleMovementAdd()
+        else if (stage === 'completed') addMovementMutation()
     }, [stage])
 
     const handleMainClick = () => {
