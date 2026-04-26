@@ -4,18 +4,23 @@ import { removeDzContainer } from "@/utils/dz";
 import { Movement, MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMovementsChronological } from "@/services/api/movements";
+import { useInView } from "react-intersection-observer";
 
 export default function History() {
     removeDzContainer();
 
-    const [page, setPage] = useState<number>(0);
+    const { ref, inView } = useInView({ threshold: 0.5 });
 
-    const { data, fetchNextPage, hasNextPage, status, error } = useInfiniteQuery({
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, error } = useInfiniteQuery({
         queryKey: ['movementHistory'],
-        queryFn: () => getMovementsChronological(1, page),
+        queryFn: ({ pageParam }) => getMovementsChronological(1, pageParam),
         initialPageParam: 0,
-        getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+        getNextPageParam: lastPage => lastPage.next
     });
+
+    useEffect(() => {
+        if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage()
+    }, [inView])
 
     if (status === 'pending') return <p className="p-4">Loading...</p>
     if (status === 'error') return <p className="p-4">Error: {error?.message}</p>
@@ -29,7 +34,7 @@ export default function History() {
                             <Fragment key={i}>
                                 {
 
-                                    page.map((m: Movement) => {
+                                    page.items.map((m: Movement) => {
                                         const { id, type, intensity, timestamp } = m;
 
                                         const typeLabel = MOVEMENT_TYPE_LABELS[type];
@@ -52,7 +57,16 @@ export default function History() {
                             </Fragment>
                         ))
                     }
+                    {
+                        hasNextPage ?
+                            isFetchingNextPage ?
+                                <h4 ref={ref} className="text-text-secondary text-center font-bold">Loading...</h4>
+                                :
+                                <h4 ref={ref} className="text-text-secondary text-center font-bold">Load More</h4>
+                            : null
+                    }
                 </div>
+
             </div>
         </main>
     );

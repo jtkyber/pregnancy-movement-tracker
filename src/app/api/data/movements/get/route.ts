@@ -1,4 +1,5 @@
 import { sql } from "@/lib/db";
+import { ApiMovementsChrono } from "@/types/api_returns";
 import { DBMovement } from "@/types/db_tables";
 import { Movement } from "@/types/movements.types";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,14 +18,21 @@ export async function GET(req: NextRequest) {
     const limitAsInt: number = parseInt(limit);
     const offset: number = parseInt(page) * limitAsInt;
 
-    const data = await sql`
-        SELECT * FROM movements
-        WHERE pregnancy_id = ${pregnancyID}
-        ORDER BY timestamp DESC
-        LIMIT ${limitAsInt} OFFSET ${offset}
-    ;` as DBMovement[];
+    type CountResult = { total: string }
+    const [data, countResult] = await Promise.all([
+        sql`
+            SELECT * FROM movements
+            WHERE pregnancy_id = ${pregnancyID}
+            ORDER BY timestamp DESC
+            LIMIT ${limitAsInt} OFFSET ${offset}
+        `,
+        sql`
+            SELECT COUNT(*) AS total FROM movements
+            WHERE pregnancy_id = ${pregnancyID}
+        `,
+    ]) as [DBMovement[], CountResult[]];
 
-    const result: Movement[] = data.map(m => (
+    const items: Movement[] = data.map(m => (
         {
             id: m.id,
             type: m.movement_type,
@@ -33,6 +41,13 @@ export async function GET(req: NextRequest) {
             timestamp: m.timestamp
         }
     ))
+
+    const totalCount = Number(countResult[0].total);
+
+    const result: ApiMovementsChrono = {
+        items,
+        totalPages: Math.ceil(totalCount / limitAsInt)
+    }
 
     return NextResponse.json(result);
 }

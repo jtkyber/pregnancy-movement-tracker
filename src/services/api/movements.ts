@@ -1,4 +1,6 @@
 import { MovementIntensity, MovementType } from "@/constants/movement";
+import { ApiMovementsChrono } from "@/types/api_returns";
+import { Movement } from "@/types/movements.types";
 
 export async function addMovement(pregnancyID: number, type: MovementType, intensity: MovementIntensity) {
     try {
@@ -22,13 +24,19 @@ export async function addMovement(pregnancyID: number, type: MovementType, inten
     }
 }
 
-export async function getMovementsChronological(pregnancyID: number, page: number) {
+export async function getMovementsChronological(pregnancyID: number, page: number): Promise<{
+    items: Movement[],
+    next: number | undefined
+}> {
     try {
         const res = await fetch(`/api/data/movements/get?pregnancyID=${pregnancyID}&page=${page}&limit=10`);
+        const data: ApiMovementsChrono = await res.json();
 
-        const data = await res.json();
-        return data
+        return {
+            items: data.items,
+            next: page < data.totalPages ? page + 1 : undefined
+        }
     } catch (err) {
-
+        throw new Error('Unable to get movements');
     }
 }   
