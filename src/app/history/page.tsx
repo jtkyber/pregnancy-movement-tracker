@@ -1,5 +1,5 @@
 'use client'
-import { CSSProperties, Fragment, useEffect, useState } from "react";
+import { CSSProperties, Fragment, useEffect } from "react";
 import { removeDzContainer } from "@/utils/dz";
 import { Movement, MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
 import { useInfiniteQuery } from "@tanstack/react-query";

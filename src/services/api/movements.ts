@@ -39,4 +39,4 @@ export async function getMovementsChronological(pregnancyID: number, page: numbe
     } catch (err) {
         throw new Error('Unable to get movements');
     }
-}   
+}

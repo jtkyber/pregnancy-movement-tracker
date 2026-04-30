@@ -12,10 +12,10 @@ const TabBar = () => {
         if (pathName !== '/') router.push('/');
     }
     const handleTrendsClick = () => {
-        if (pathName !== 'trends') router.push('trends');
+        if (pathName !== '/trends') router.push('/trends');
     }
     const handleHistoryClick = () => {
-        if (pathName !== 'history') router.push('history');
+        if (pathName !== '/history') router.push('/history');
     }
 
     return (
