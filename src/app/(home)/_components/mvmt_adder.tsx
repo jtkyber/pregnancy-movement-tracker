@@ -1,13 +1,13 @@
-import { MovementIntensity, MovementType } from "@/constants/movement";
+import { MovementIntensity, MovementIntensityKey, MovementType, MovementTypeKey } from "@/types/movements";
 import { addMovement } from "@/services/api/movements";
-import { MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
+import { MOVEMENT_INTENSITIES, MOVEMENT_TYPES } from "@/types/movements";
 import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 const MvmtAdder = () => {
     const [stage, setStage] = useState<'closed' | 'type' | 'intensity' | 'completed'>('closed');
-    const [movementType, setMovementType] = useState<MovementType | null>(null)
-    const [movementIntensity, setMovementIntensity] = useState<MovementIntensity | null>(null)
+    const [movementType, setMovementType] = useState<MovementTypeKey | null>(null)
+    const [movementIntensity, setMovementIntensity] = useState<MovementIntensityKey | null>(null)
 
     const queryClient = useQueryClient();
     const { mutate: addMovementMutation } = useMutation({
@@ -39,12 +39,12 @@ const MvmtAdder = () => {
         }
     }
 
-    const handleTypeSelect = (type: MovementType) => {
+    const handleTypeSelect = (type: MovementTypeKey) => {
         setMovementType(type);
         setStage('intensity');
     }
 
-    const handleIntensitySelect = (intensity: MovementIntensity) => {
+    const handleIntensitySelect = (intensity: MovementIntensityKey) => {
         setMovementIntensity(intensity);
         setStage('completed');
     }
@@ -60,8 +60,8 @@ const MvmtAdder = () => {
             </button>
 
             {
-                (Object.keys(MOVEMENT_TYPE_LABELS) as MovementType[]).map((key, _) => {
-                    const label = MOVEMENT_TYPE_LABELS[key];
+                (Object.keys(MOVEMENT_TYPES) as MovementTypeKey[]).map((key, _) => {
+                    const label = MOVEMENT_TYPES[key];
                     const isSelected = key === movementType;
 
                     return (
@@ -82,8 +82,8 @@ const MvmtAdder = () => {
             }
 
             {
-                (Object.keys(MOVEMENT_INTENSITY_LABELS) as MovementIntensity[]).map((key, _) => {
-                    const label = MOVEMENT_INTENSITY_LABELS[key];
+                (Object.keys(MOVEMENT_INTENSITIES) as MovementIntensityKey[]).map((key, _) => {
+                    const label = MOVEMENT_INTENSITIES[key];
                     const isSelected = key === movementIntensity;
 
                     return (

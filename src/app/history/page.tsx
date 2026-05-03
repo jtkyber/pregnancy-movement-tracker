@@ -1,7 +1,7 @@
 'use client'
 import { CSSProperties, Fragment, useEffect } from "react";
 import { removeDzContainer } from "@/utils/dz";
-import { Movement, MOVEMENT_INTENSITY_LABELS, MOVEMENT_TYPE_LABELS } from "@/types/movements.types";
+import { Movement, MOVEMENT_INTENSITIES, MOVEMENT_TYPES } from "@/types/movements";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMovementsChronological } from "@/services/api/movements";
 import { useInView } from "react-intersection-observer";
@@ -37,8 +37,8 @@ export default function History() {
                                     page.items.map((m: Movement) => {
                                         const { id, type, intensity, timestamp } = m;
 
-                                        const typeLabel = MOVEMENT_TYPE_LABELS[type];
-                                        const intensityLabel = MOVEMENT_INTENSITY_LABELS[intensity];
+                                        const typeLabel = MOVEMENT_TYPES[type];
+                                        const intensityLabel = MOVEMENT_INTENSITIES[intensity];
 
                                         const date_time = new Date(timestamp);
                                         const date = date_time.toLocaleDateString('en-gb', { month: 'short', day: 'numeric' });
